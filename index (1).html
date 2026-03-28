@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KEF Red by Karas — Wine Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --wine-deep: #4A0E1B;
+  --wine-rich: #722F37;
+  --wine-mid: #8B3A3A;
+  --wine-blush: #B5585A;
+  --wine-rose: #C9787C;
+  --wine-light: #E8C4C0;
+  --wine-pale: #F5E6E3;
+  --wine-whisper: #FAF0EE;
+  --cream: #FFFAF8;
+  --white: #FFFFFF;
+  --wine-shadow: rgba(74, 14, 27, 0.15);
+  --wine-glow: rgba(114, 47, 55, 0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+}
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: var(--white);
+  color: var(--wine-deep);
+  overflow-x: hidden;
+}
+
+/* Navigation */
+.nav {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--wine-blush);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.nav-dot:hover,
+.nav-dot.active {
+  background: var(--wine-rich);
+  border-color: var(--wine-rich);
+  transform: scale(1.4);
+}
+
+.nav-dot .tooltip {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--wine-deep);
+  color: var(--wine-pale);
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.nav-dot:hover .tooltip { opacity: 1; }
+
+/* Sections */
+section {
+  min-height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Slide animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+
+/* ===== SLIDE 1: HERO ===== */
+.hero {
+  background: var(--white);
+  flex-direction: column;
+  padding: 0 5vw;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  max-width: 1400px;
+  width: 100%;
+  gap: 40px;
+  min-height: 100vh;
+}
+
+.hero-text {
+  padding-right: 40px;
+}
+
+.hero-label {
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--wine-blush);
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 6vw, 6.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: var(--wine-deep);
+  margin-bottom: 8px;
+}
+
+.hero-title span {
+  display: block;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--wine-rich);
+  font-size: 0.55em;
+  line-height: 1.4;
+  margin-top: 12px;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--wine-mid);
+  font-style: italic;
+  margin-top: 20px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.hero-line {
+  width: 80px;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--wine-rich), transparent);
+  margin: 28px 0;
+}
+
+.hero-meta {
+  font-size: 0.9rem;
+  color: var(--wine-blush);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.hero-image::before {
+  content: '';
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--wine-pale) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.hero-image img {
+  max-height: 82vh;
+  width: auto;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 30px 60px rgba(74, 14, 27, 0.2));
+  animation: floatBottle 6s ease-in-out infinite;
+}
+
+@keyframes floatBottle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--wine-rose);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+.scroll-hint .arrow {
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(to bottom, var(--wine-rose), transparent);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ===== CONTENT SLIDES ===== */
+.slide-content {
+  max-width: 1100px;
+  width: 100%;
+  padding: 80px 5vw;
+}
+
+.slide-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  font-weight: 900;
+  color: var(--wine-pale);
+  position: absolute;
+  top: 40px;
+  left: 5vw;
+  line-height: 1;
+  user-select: none;
+}
+
+.slide-label {
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--wine-blush);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.slide-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  color: var(--wine-deep);
+  line-height: 1.15;
+  margin-bottom: 32px;
+}
+
+.slide-heading em {
+  font-style: italic;
+  color: var(--wine-rich);
+}
+
+.slide-body {
+  font-size: 1.2rem;
+  line-height: 1.85;
+  color: var(--wine-mid);
+  max-width: 750px;
+  font-weight: 400;
+}
+
+.slide-body strong {
+  color: var(--wine-deep);
+  font-weight: 700;
+}
+
+.slide-divider {
+  width: 60px;
+  height: 1.5px;
+  background: var(--wine-rose);
+  margin: 28px 0;
+}
+
+/* ===== SLIDE 2: ARMENIA ===== */
+.slide-armenia {
+  background: var(--cream);
+  position: relative;
+}
+
+.slide-armenia::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(135deg, transparent, var(--wine-whisper));
+  pointer-events: none;
+}
+
+.timeline-badge {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--wine-rich);
+  border: 3px solid var(--wine-light);
+  border-radius: 50%;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+  line-height: 1;
+}
+
+.timeline-badge span {
+  font-size: 1.1rem;
+  display: block;
+  text-align: center;
+}
+
+/* ===== SLIDE 3: ARENI NOIR ===== */
+.slide-areni {
+  background: var(--white);
+}
+
+.grape-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 32px;
+}
+
+.grape-card {
+  padding: 32px;
+  border: 1px solid var(--wine-light);
+  border-radius: 2px;
+  background: var(--cream);
+  transition: all 0.4s;
+}
+
+.grape-card:hover {
+  border-color: var(--wine-rose);
+  box-shadow: 0 12px 40px var(--wine-shadow);
+  transform: translateY(-4px);
+}
+
+.grape-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: var(--wine-deep);
+  margin-bottom: 12px;
+}
+
+.grape-card p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--wine-mid);
+}
+
+/* ===== SLIDE 4: KARAS WINERY ===== */
+.slide-karas {
+  background: var(--wine-deep);
+  color: var(--wine-pale);
+}
+
+.slide-karas .slide-number { color: rgba(255,255,255,0.06); }
+.slide-karas .slide-label { color: var(--wine-rose); }
+.slide-karas .slide-heading { color: var(--wine-light); }
+.slide-karas .slide-heading em { color: var(--wine-rose); }
+.slide-karas .slide-body { color: var(--wine-rose); }
+.slide-karas .slide-body strong { color: var(--wine-light); }
+.slide-karas .slide-divider { background: var(--wine-blush); }
+
+.karas-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 40px;
+}
+
+.karas-stat {
+  text-align: center;
+  padding: 28px 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 2px;
+}
+
+.karas-stat .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--wine-light);
+  line-height: 1;
+}
+
+.karas-stat .label {
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--wine-rose);
+  margin-top: 8px;
+}
+
+/* ===== SLIDE 5: WINEMAKERS ===== */
+.slide-winemakers {
+  background: var(--cream);
+}
+
+.makers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 36px;
+}
+
+.maker-card {
+  padding: 36px;
+  background: var(--white);
+  border-left: 3px solid var(--wine-rich);
+  box-shadow: 0 4px 20px var(--wine-shadow);
+}
+
+.maker-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: var(--wine-deep);
+  margin-bottom: 4px;
+}
+
+.maker-card .role {
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--wine-blush);
+  margin-bottom: 16px;
+}
+
+.maker-card p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--wine-mid);
+}
+
+.maker-card .memorial {
+  font-style: italic;
+  color: var(--wine-rich);
+  border-top: 1px solid var(--wine-light);
+  margin-top: 16px;
+  padding-top: 12px;
+  font-size: 0.95rem;
+}
+
+/* ===== SLIDE 6: THE WINE ===== */
+.slide-wine {
+  background: var(--white);
+}
+
+.wine-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  margin-top: 36px;
+}
+
+.wine-detail {
+  padding: 24px;
+  text-align: center;
+  border: 1px solid var(--wine-light);
+  background: var(--wine-whisper);
+}
+
+.wine-detail .icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.wine-detail h5 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--wine-deep);
+  margin-bottom: 6px;
+}
+
+.wine-detail p {
+  font-size: 0.95rem;
+  color: var(--wine-mid);
+  line-height: 1.5;
+}
+
+/* ===== SLIDE 7: BLEND ===== */
+.slide-blend {
+  background: linear-gradient(135deg, var(--wine-deep) 0%, var(--wine-rich) 100%);
+  color: var(--wine-pale);
+}
+
+.slide-blend .slide-number { color: rgba(255,255,255,0.05); }
+.slide-blend .slide-label { color: var(--wine-rose); }
+.slide-blend .slide-heading { color: var(--wine-light); }
+.slide-blend .slide-heading em { color: var(--wine-rose); }
+.slide-blend .slide-divider { background: var(--wine-blush); }
+
+.blend-compare {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 0;
+  align-items: start;
+  margin-top: 36px;
+}
+
+.blend-col {
+  padding: 32px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+}
+
+.blend-col h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--wine-light);
+  margin-bottom: 16px;
+}
+
+.blend-col p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--wine-rose);
+}
+
+.blend-bridge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--wine-rose);
+  padding-top: 60px;
+}
+
+/* ===== SLIDE 8: TERROIR ===== */
+.slide-terroir {
+  background: var(--cream);
+}
+
+.terroir-facts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 36px;
+}
+
+.terroir-fact {
+  padding: 28px 20px;
+  text-align: center;
+  background: var(--white);
+  border-bottom: 3px solid var(--wine-rich);
+  box-shadow: 0 2px 12px var(--wine-shadow);
+  transition: transform 0.3s;
+}
+
+.terroir-fact:hover { transform: translateY(-6px); }
+
+.terroir-fact .val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--wine-deep);
+  line-height: 1.1;
+}
+
+.terroir-fact .desc {
+  font-size: 0.9rem;
+  color: var(--wine-mid);
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+/* ===== SLIDE 9: CLOSING ===== */
+.slide-closing {
+  background: var(--wine-deep);
+  text-align: center;
+  flex-direction: column;
+}
+
+.closing-inner {
+  max-width: 800px;
+  padding: 60px 5vw;
+}
+
+.closing-inner .slide-label { color: var(--wine-rose); }
+
+.closing-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 700;
+  color: var(--wine-light);
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.closing-title em {
+  font-style: italic;
+  color: var(--wine-rose);
+}
+
+.closing-body {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: var(--wine-rose);
+  margin-bottom: 36px;
+}
+
+.closing-toast {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--wine-light);
+  margin-top: 20px;
+}
+
+.closing-toast .armenian {
+  display: block;
+  font-size: 1.8rem;
+  margin-top: 8px;
+  color: var(--wine-rose);
+  font-style: normal;
+}
+
+.pairing-tags {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.pairing-tag {
+  padding: 8px 20px;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--wine-rose);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.pairing-tag:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: var(--wine-rose);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; text-align: center; }
+  .hero-text { padding: 100px 0 0 0; }
+  .hero-image img { max-height: 50vh; }
+  .grape-grid, .makers-grid, .blend-compare { grid-template-columns: 1fr; }
+  .wine-details { grid-template-columns: 1fr 1fr; }
+  .terroir-facts { grid-template-columns: 1fr 1fr; }
+  .karas-stats { grid-template-columns: 1fr; }
+  .blend-bridge { padding: 16px 0; }
+  .nav { display: none; }
+  .slide-number { font-size: 4rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation Dots -->
+<nav class="nav" id="nav">
+  <button class="nav-dot active" onclick="scrollToSlide(0)"><span class="tooltip">KEF Red</span></button>
+  <button class="nav-dot" onclick="scrollToSlide(1)"><span class="tooltip">Armenia</span></button>
+  <button class="nav-dot" onclick="scrollToSlide(2)"><span class="tooltip">Areni Noir</span></button>
+  <button class="nav-dot" onclick="scrollToSlide(3)"><span class="tooltip">Karas Winery</span></button>
+  <button class="nav-dot" onclick="scrollToSlide(4)"><span class="tooltip">Winemakers</span></button>
+  <button class="nav-dot" onclick="scrollToSlide(5)"><span class="tooltip">The Wine</span></button>
+  <button class="nav-dot" onclick="scrollToSlide(6)"><span class="tooltip">The Blend</span></button>
+  <button class="nav-dot" onclick="scrollToSlide(7)"><span class="tooltip">Terroir</span></button>
+  <button class="nav-dot" onclick="scrollToSlide(8)"><span class="tooltip">Cheers!</span></button>
+</nav>
+
+<!-- SLIDE 1: HERO -->
+<section class="hero" id="slide-0">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-label reveal">Wine Tasting Presentation</div>
+      <h1 class="hero-title reveal reveal-delay-1">
+        KEF
+        <span>Red by Karas</span>
+      </h1>
+      <p class="hero-subtitle reveal reveal-delay-2">An Armenian Celebration in Every Glass</p>
+      <div class="hero-line reveal reveal-delay-3"></div>
+      <p class="hero-meta reveal reveal-delay-4">Areni Noir · Malbec &nbsp;|&nbsp; Ararat Valley · 2022</p>
+    </div>
+    <div class="hero-image reveal reveal-delay-2">
+      <img src="bottle.webp" alt="KEF Red by Karas wine bottle" />
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- SLIDE 2: ARMENIA -->
+<section class="slide-armenia" id="slide-1">
+  <div class="slide-number">01</div>
+  <div class="slide-content">
+    <div class="slide-label reveal">Chapter One</div>
+    <h2 class="slide-heading reveal reveal-delay-1">Armenia: <em>The Birthplace of Wine</em></h2>
+    <div class="slide-divider reveal reveal-delay-2"></div>
+    <div class="timeline-badge reveal reveal-delay-2">
+      <div><span>4100</span><span style="font-size:0.7rem;letter-spacing:0.1em;">BC</span></div>
+    </div>
+    <p class="slide-body reveal reveal-delay-3">
+      The world's oldest known winery was discovered in 2007 in the <strong>Areni-1 cave complex</strong> in Armenia, dating back approximately 6,100 years. Archaeologists unearthed fermentation vats, a wine press, storage jars, and domesticated <em>Vitis vinifera</em> grape seeds — the earliest evidence of organized winemaking.
+    </p>
+    <div class="slide-divider reveal reveal-delay-3"></div>
+    <p class="slide-body reveal reveal-delay-4" style="margin-top:16px;">
+      The biblical story of <strong>Noah landing on Mount Ararat</strong> and planting vineyards further roots Armenia in the origin story of wine. The South Caucasus is where viticulture began — centuries before France, Italy, or Spain even existed as wine regions.
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 3: ARENI NOIR -->
+<section class="slide-areni" id="slide-2">
+  <div class="slide-number">02</div>
+  <div class="slide-content">
+    <div class="slide-label reveal">Chapter Two</div>
+    <h2 class="slide-heading reveal reveal-delay-1">The Areni Noir Grape: <em>A Living Fossil</em></h2>
+    <div class="slide-divider reveal reveal-delay-2"></div>
+    <p class="slide-body reveal reveal-delay-2">
+      One of the oldest continuously cultivated grape varieties in the world — approximately <strong>6,000 years</strong> of unbroken history. Named after the village of Areni in Vayots Dzor, some researchers even suggest it could be an ancestor of Pinot Noir.
+    </p>
+    <div class="grape-grid">
+      <div class="grape-card reveal reveal-delay-2">
+        <h4>Flavor Profile</h4>
+        <p>Red cherries, pomegranate, currants, and warm spices. Medium tannins with high acidity and a velvety, lingering texture.</p>
+      </div>
+      <div class="grape-card reveal reveal-delay-3">
+        <h4>Comparisons</h4>
+        <p>Often compared to Pinot Noir and Sangiovese for its elegance and aromatic complexity — yet entirely unique to its Armenian terroir.</p>
+      </div>
+      <div class="grape-card reveal reveal-delay-3">
+        <h4>Terroir Needs</h4>
+        <p>Thrives in high-altitude continental climates with volcanic soils — conditions that concentrate its distinctive flavors.</p>
+      </div>
+      <div class="grape-card reveal reveal-delay-4">
+        <h4>Heritage</h4>
+        <p>A grape that has survived empires, invasions, and centuries of change — a living connection to humanity's first wines.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 4: KARAS WINERY -->
+<section class="slide-karas" id="slide-3">
+  <div class="slide-number">03</div>
+  <div class="slide-content">
+    <div class="slide-label reveal">Chapter Three</div>
+    <h2 class="slide-heading reveal reveal-delay-1">Karas Winery: <em>Where Diaspora Meets Homeland</em></h2>
+    <div class="slide-divider reveal reveal-delay-2"></div>
+    <p class="slide-body reveal reveal-delay-2">
+      Founded in 2003 by <strong>Eduardo Eurnekian</strong>, an Argentine-Armenian businessman who wanted to reconnect with his ancestral roots. <strong>"Karas"</strong> means "amphora" in Armenian — the ancient clay vessels used for winemaking for 6,000 years. Located in the Armavir region, at the foot of Mount Ararat, on volcanic soils. Now led by <strong>Juliana Del Aguila Eurnekian</strong>, Eduardo's niece, vintner and sommelier.
+    </p>
+    <div class="karas-stats">
+      <div class="karas-stat reveal reveal-delay-3">
+        <div class="num">2003</div>
+        <div class="label">Founded</div>
+      </div>
+      <div class="karas-stat reveal reveal-delay-3">
+        <div class="num">400+</div>
+        <div class="label">Hectares</div>
+      </div>
+      <div class="karas-stat reveal reveal-delay-4">
+        <div class="num">6000</div>
+        <div class="label">Years of Tradition</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 5: WINEMAKERS -->
+<section class="slide-winemakers" id="slide-4">
+  <div class="slide-number">04</div>
+  <div class="slide-content">
+    <div class="slide-label reveal">Chapter Four</div>
+    <h2 class="slide-heading reveal reveal-delay-1">The Winemakers: <em>A Global Dream Team</em></h2>
+    <div class="slide-divider reveal reveal-delay-2"></div>
+    <div class="makers-grid">
+      <div class="maker-card reveal reveal-delay-2">
+        <h4>Michel Rolland</h4>
+        <div class="role">Consulting Winemaker · 1947–2026</div>
+        <p>The legendary French "flying winemaker" from Bordeaux. Consultant to 150+ estates across 14 countries. Pioneer of fruit-forward, structured blending. He stated Armenian wines were among his top 3 alongside French and Argentine.</p>
+        <p class="memorial">Passed away March 20, 2026 — making this wine part of his extraordinary legacy.</p>
+      </div>
+      <div class="maker-card reveal reveal-delay-3">
+        <h4>Gabriel Rogel</h4>
+        <div class="role">Head Winemaker · Since 2013</div>
+        <p>Young Argentine from Mendoza who moved 8,700 miles to Yerevan. Has been pioneering work with indigenous Armenian varieties from scratch — no prior research existed at scale. Works alongside Armenian enologist Zara Khechechyan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 6: THE WINE -->
+<section class="slide-wine" id="slide-5">
+  <div class="slide-number">05</div>
+  <div class="slide-content">
+    <div class="slide-label reveal">Chapter Five</div>
+    <h2 class="slide-heading reveal reveal-delay-1">KEF Red: <em>The Wine</em></h2>
+    <div class="slide-divider reveal reveal-delay-2"></div>
+    <p class="slide-body reveal reveal-delay-2">
+      <strong>"KEF"</strong> means "feast" or "celebration" in Armenian — an invitation to celebrate life. A blend of <strong>Areni Noir and Malbec</strong>, marrying Armenia's oldest indigenous grape with a prestigious international variety, grown in the volcanic soils of the Ararat Valley.
+    </p>
+    <div class="wine-details">
+      <div class="wine-detail reveal reveal-delay-2">
+        <div class="icon">🍷</div>
+        <h5>Appearance</h5>
+        <p>Deep ruby red with violet reflections</p>
+      </div>
+      <div class="wine-detail reveal reveal-delay-3">
+        <div class="icon">🌹</div>
+        <h5>Aromas</h5>
+        <p>Red fruits, subtle spice, floral notes</p>
+      </div>
+      <div class="wine-detail reveal reveal-delay-3">
+        <div class="icon">✨</div>
+        <h5>Palate</h5>
+        <p>Balanced acidity, soft tannins, elegant finish</p>
+      </div>
+      <div class="wine-detail reveal reveal-delay-3">
+        <div class="icon">🌡️</div>
+        <h5>Alcohol</h5>
+        <p>13.5% · Serve at 16–18°C</p>
+      </div>
+      <div class="wine-detail reveal reveal-delay-4">
+        <div class="icon">🍇</div>
+        <h5>Blend</h5>
+        <p>Areni Noir + Malbec</p>
+      </div>
+      <div class="wine-detail reveal reveal-delay-4">
+        <div class="icon">🏔️</div>
+        <h5>Origin</h5>
+        <p>Ararat Valley, Armenia</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 7: BLEND PHILOSOPHY -->
+<section class="slide-blend" id="slide-6">
+  <div class="slide-number">06</div>
+  <div class="slide-content">
+    <div class="slide-label reveal">Chapter Six</div>
+    <h2 class="slide-heading reveal reveal-delay-1">The Blend Philosophy: <em>Old World Meets New World</em></h2>
+    <div class="slide-divider reveal reveal-delay-2"></div>
+    <div class="blend-compare">
+      <div class="blend-col reveal reveal-delay-2">
+        <h4>Areni Noir</h4>
+        <p>Delicate red fruit aromas. Bright, vibrant acidity. Pure terroir expression. 6,000 years of unbroken heritage — the soul of the blend.</p>
+      </div>
+      <div class="blend-bridge reveal reveal-delay-3">+</div>
+      <div class="blend-col reveal reveal-delay-3">
+        <h4>Malbec</h4>
+        <p>Deep structure and rich tannins. Body, depth, and power. An international variety that thrives in volcanic soils — from Argentina to Armenia.</p>
+      </div>
+    </div>
+    <p class="slide-body reveal reveal-delay-4" style="color: var(--wine-rose); margin-top: 32px; text-align: center; max-width: 100%;">
+      <em>This blend embodies Karas's philosophy: bridging Armenia's ancient winemaking culture with global expertise.</em>
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 8: TERROIR -->
+<section class="slide-terroir" id="slide-7">
+  <div class="slide-number">07</div>
+  <div class="slide-content">
+    <div class="slide-label reveal">Chapter Seven</div>
+    <h2 class="slide-heading reveal reveal-delay-1">Terroir: <em>Fire, Earth & Wine</em></h2>
+    <div class="slide-divider reveal reveal-delay-2"></div>
+    <p class="slide-body reveal reveal-delay-2">
+      Volcanic soils from Mount Ararat — basalt, limestone, volcanic tuff, and alluvial stones. Extreme conditions that produce grapes with <strong>thick skins, concentrated flavors</strong>, and a marked identity.
+    </p>
+    <div class="terroir-facts">
+      <div class="terroir-fact reveal reveal-delay-2">
+        <div class="val">850–1,100m</div>
+        <div class="desc">Vineyard elevation</div>
+      </div>
+      <div class="terroir-fact reveal reveal-delay-3">
+        <div class="val">~300mm</div>
+        <div class="desc">Annual rainfall</div>
+      </div>
+      <div class="terroir-fact reveal reveal-delay-3">
+        <div class="val">Continental</div>
+        <div class="desc">Highland climate</div>
+      </div>
+      <div class="terroir-fact reveal reveal-delay-4">
+        <div class="val">Volcanic</div>
+        <div class="desc">Basalt & tuff soils</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 9: CLOSING -->
+<section class="slide-closing" id="slide-8">
+  <div class="closing-inner">
+    <div class="slide-label reveal">To Life</div>
+    <h2 class="closing-title reveal reveal-delay-1">With each glass of KEF,<br>you're tasting <em>6,000 years</em> of history.</h2>
+    <div class="pairing-tags">
+      <span class="pairing-tag reveal reveal-delay-2">Grilled Lamb</span>
+      <span class="pairing-tag reveal reveal-delay-2">Khorovats</span>
+      <span class="pairing-tag reveal reveal-delay-2">Red Meats</span>
+      <span class="pairing-tag reveal reveal-delay-3">Pasta</span>
+      <span class="pairing-tag reveal reveal-delay-3">Dark Chocolate</span>
+      <span class="pairing-tag reveal reveal-delay-3">Aged Cheeses</span>
+    </div>
+    <div class="closing-toast reveal reveal-delay-4">
+      Կենաց!
+      <span class="armenian">Kenats! — "To life!"</span>
+    </div>
+  </div>
+</section>
+
+<script>
+// Intersection Observer for reveal animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Nav dots
+const sections = document.querySelectorAll('section');
+const dots = document.querySelectorAll('.nav-dot');
+
+function scrollToSlide(index) {
+  sections[index].scrollIntoView({ behavior: 'smooth' });
+}
+
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const index = Array.from(sections).indexOf(entry.target);
+      dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    }
+  });
+}, { threshold: 0.5 });
+
+sections.forEach(s => navObserver.observe(s));
+</script>
+</body>
+</html>
